@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ami v2 — Vlog Recipe Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:   #F7F3EE;
+  --cream2:  #EDE7DC;
+  --sand:    #D4C4AE;
+  --tan:     #B8A28A;
+  --brown:   #7A5C44;
+  --dark:    #2C1F14;
+  --accent:  #C4714A;
+  --accent2: #E8A87C;
+  --green:   #6B8C6A;
+  --white:   #FFFFFF;
+  --text:    #2C1F14;
+  --text2:   #7A6855;
+  --text3:   #B8A28A;
+  --r-sm:    8px;
+  --r-md:    12px;
+  --r-lg:    16px;
+  --r-xl:    24px;
+  --r-full:  999px;
+  --font-d:  'DM Serif Display', serif;
+  --font-b:  'DM Sans', sans-serif;
+}
+
+body {
+  background: #E2D9CE;
+  font-family: var(--font-b);
+  color: var(--text);
+  padding: 40px 20px 60px;
+}
+
+h1.doc-title {
+  font-family: var(--font-d);
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+p.doc-sub {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.screens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.screen-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.screen-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+/* ── Phone shell ── */
+.phone {
+  width: 375px;
+  min-height: 812px;
+  background: var(--cream);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.6) inset,
+    0 32px 80px rgba(44,31,20,0.2),
+    0 8px 24px rgba(44,31,20,0.1);
+}
+
+/* ── Status bar ── */
+.sb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dark);
+}
+.sb-r { display: flex; gap: 5px; align-items: center; font-size: 11px; }
+
+/* ── Bottom nav ── */
+.nav {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--white);
+  border-top: 1px solid var(--cream2);
+  padding: 10px 0 22px;
+}
+.ni {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  font-size: 10px; color: var(--text3);
+  cursor: pointer;
+}
+.ni.on { color: var(--accent); }
+.ni svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nc {
+  width: 48px; height: 48px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: -14px;
+  box-shadow: 0 4px 16px rgba(196,113,74,0.45);
+}
+.nc svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+
+/* ── Shared ── */
+.logo { font-family: var(--font-d); font-size: 26px; color: var(--dark); font-style: italic; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--tan); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--white); flex-shrink: 0; }
+.icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--cream2); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.icon-btn svg { width: 16px; height: 16px; stroke: var(--dark); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.chip { display: inline-block; padding: 5px 13px; border-radius: var(--r-full); font-size: 11px; font-weight: 500; background: var(--cream2); color: var(--text2); cursor: pointer; white-space: nowrap; }
+.chip.on { background: var(--accent); color: #fff; }
+
+.sec-title { font-size: 15px; font-weight: 600; color: var(--dark); }
+
+/* color swatches */
+.bg-t { background: linear-gradient(135deg,#B8CEB0,#7A9E7E); }
+.bg-f { background: linear-gradient(135deg,#E8C9A0,#C49A6C); }
+.bg-c { background: linear-gradient(135deg,#A8B8C8,#6A7E8E); }
+.bg-s { background: linear-gradient(135deg,#E8A87C,#C4714A); }
+.bg-k { background: linear-gradient(135deg,#C8B89A,#8A7060); }
+.bg-m { background: linear-gradient(135deg,#B8D4C0,#6A9E7A); }
+
+/* ════════════════════════════════
+   SCREEN 1 — HOME / FEED
+════════════════════════════════ */
+.feed-header {
+  padding: 4px 20px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.feed-chips {
+  display: flex; gap: 8px; padding: 0 20px 14px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.feed-chips::-webkit-scrollbar { display: none; }
+
+/* Masonry-style grid */
+.feed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 16px;
+  margin-bottom: 96px;
+}
+.fc { border-radius: var(--r-lg); overflow: hidden; position: relative; cursor: pointer; background: var(--white); }
+.fc-thumb {
+  width: 100%; display: flex; align-items: flex-end; padding: 10px;
+  position: relative; aspect-ratio: 3/4;
+}
+.fc:nth-child(2) .fc-thumb { aspect-ratio: 3/5; }
+.fc:nth-child(3) .fc-thumb { aspect-ratio: 1/1; }
+.fc-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(44,31,20,0.6) 0%, transparent 55%); border-radius: var(--r-lg) var(--r-lg) 0 0; }
+.fc-info { position: relative; z-index: 1; }
+.fc-title { font-size: 11px; font-weight: 600; color: #fff; line-height: 1.3; }
+.fc-user  { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+/* Recipe badge */
+.recipe-badge {
+  position: absolute; top: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  border-radius: var(--r-full);
+  padding: 3px 8px;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 9px; font-weight: 600; color: var(--accent);
+  z-index: 2;
+}
+.recipe-badge span { font-size: 9px; }
+
+.fc-meta {
+  padding: 10px 12px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fc-meta-left { display: flex; flex-direction: column; gap: 2px; }
+.fc-meta-title { font-size: 12px; font-weight: 600; color: var(--dark); }
+.fc-meta-tools { font-size: 10px; color: var(--text2); }
+.fc-meta-right { display: flex; gap: 8px; align-items: center; }
+.fc-stat { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 2px; }
+
+/* ════════════════════════════════
+   SCREEN 2 — RECIPE DETAIL
+════════════════════════════════ */
+.rd-back {
+  padding: 4px 20px 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.rd-video {
+  margin: 12px 16px;
+  border-radius: var(--r-xl);
+  aspect-ratio: 16/10;
+  background: linear-gradient(160deg, #7A9E7E 0%, #C4714A 55%, #2C1F14 100%);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.rd-play {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff;
+}
+.rd-dur {
+  position: absolute; bottom: 10px; right: 12px;
+  font-size: 11px; font-weight: 600; color: #fff;
+  background: rgba(0,0,0,0.4); padding: 2px 8px; border-radius: var(--r-full);
+}
+
+.rd-body { padding: 0 20px; }
+.rd-title { font-family: var(--font-d); font-size: 21px; color: var(--dark); margin: 8px 0 4px; line-height: 1.3; }
+.rd-author {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+}
+.rd-author-name { font-size: 13px; font-weight: 500; color: var(--dark); }
+.rd-author-sub  { font-size: 11px; color: var(--text2); }
+.follow-btn {
+  margin-left: auto;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-full);
+  padding: 5px 14px;
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  cursor: pointer;
+}
+
+/* Stats row */
+.rd-stats {
+  display: flex; gap: 0;
+  background: var(--cream2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.rd-stat {
+  flex: 1; padding: 10px 0; text-align: center;
+  border-right: 1px solid var(--sand);
+}
+.rd-stat:last-child { border-right: none; }
+.rd-stat-n { font-size: 15px; font-weight: 700; color: var(--dark); }
+.rd-stat-l { font-size: 9px; color: var(--text2); margin-top: 2px; }
+
+/* Tabs */
+.rd-tabs { display: flex; border-bottom: 1px solid var(--cream2); margin-bottom: 16px; }
+.rd-tab {
+  flex: 1; text-align: center; padding: 10px 0;
+  font-size: 12px; font-weight: 600; color: var(--text3);
+  border-bottom: 2px solid transparent; cursor: pointer;
+}
+.rd-tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Materials list */
+.mat-section { margin-bottom: 16px; }
+.mat-section-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text2);
+  margin-bottom: 8px;
+}
+.mat-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  background: var(--white);
+  border-radius: var(--r-md);
+  margin-bottom: 6px;
+}
+.mat-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+.mat-info { flex: 1; }
+.mat-name { font-size: 12px; font-weight: 600; color: var(--dark); }
+.mat-detail { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.mat-link {
+  font-size: 10px; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent2);
+  border-radius: var(--r-full);
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+/* Steps */
+.step-item {
+  display: flex; gap: 12px;
+  margin-bottom: 14px;
+}
+.step-n {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body {}
+.step-title { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+.step-desc  { font-size: 11px; color: var(--text2); line-height: 1.55; }
+.step-thumb {
+  width: 100%; height: 64px; border-radius: var(--r-md);
+  margin-top: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: rgba(255,255,255,0.8); font-weight: 500;
+}
+
+/* CTA */
+.rd-cta {
+  display: flex; gap: 8px; margin: 20px 0 96px;
+}
+.btn-main {
+  flex: 1; background: var(--accent); color: #fff;
+  font-size: 13px; font-weight: 600;
+  padding: 13px 0; border-radius: var(--r-full);
+  text-align: center; cursor: pointer;
+  box-shadow: 0 6px 20px rgba(196,113,74,0.35);
+}
+.btn-sub {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1.5px solid var(--sand);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.btn-sub svg { width: 18px; height: 18px; stroke: var(--dark); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ════════════════════════════════
+   SCREEN 3 — CREATE / POST
+════════════════════════════════ */
+.cr-header {
+  padding: 4px 20px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--cream2);
+}
+.cr-title { font-size: 17px; font-weight: 600; color: var(--dark); }
+.cr-publish {
+  background: var(--accent); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 7px 18px; border-radius: var(--r-full);
+  cursor: pointer;
+}
+
+.cr-body { padding: 16px 20px; overflow-y: auto; }
+
+/* Video upload */
+.cr-video {
+  border: 2px dashed var(--sand);
+  border-radius: var(--r-xl);
+  background: var(--cream2);
+  height: 150px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 6px; margin-bottom: 20px; cursor: pointer;
+}
+.cr-video-icon { font-size: 28px; }
+.cr-video h4 { font-size: 13px; font-weight: 600; color: var(--dark); }
+.cr-video p  { font-size: 11px; color: var(--text2); }
+
+/* Form fields */
+.cr-field { margin-bottom: 16px; }
+.cr-label { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.cr-input {
+  width: 100%; background: var(--white);
+  border: 1px solid var(--cream2); border-radius: var(--r-md);
+  padding: 11px 14px; font-family: var(--font-b);
+  font-size: 13px; color: var(--dark); outline: none;
+}
+.cr-textarea {
+  width: 100%; background: var(--white);
+  border: 1px solid var(--cream2); border-radius: var(--r-md);
+  padding: 11px 14px; font-family: var(--font-b);
+  font-size: 13px; color: var(--dark); outline: none;
+  resize: none; line-height: 1.6;
+}
+
+/* Materials editor */
+.mat-editor { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.mat-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--white); border-radius: var(--r-md);
+  padding: 10px 12px;
+  border: 1px solid var(--cream2);
+}
+.mat-row-icon { font-size: 16px; flex-shrink: 0; }
+.mat-row-inputs { flex: 1; display: flex; gap: 6px; }
+.mat-row-name { flex: 2; font-size: 12px; color: var(--dark); background: transparent; border: none; outline: none; font-family: var(--font-b); }
+.mat-row-detail { flex: 3; font-size: 11px; color: var(--text2); background: transparent; border: none; outline: none; font-family: var(--font-b); }
+.mat-row-del { font-size: 14px; color: var(--text3); cursor: pointer; flex-shrink: 0; }
+.add-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  cursor: pointer; padding: 8px 0;
+}
+
+/* Steps editor */
+.step-editor { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.step-row {
+  display: flex; gap: 10px;
+  background: var(--white); border-radius: var(--r-md);
+  padding: 12px; border: 1px solid var(--cream2);
+}
+.step-row-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.step-row-inputs { flex: 1; }
+.step-row-title { font-size: 12px; font-weight: 600; color: var(--dark); background: transparent; border: none; outline: none; font-family: var(--font-b); width: 100%; margin-bottom: 4px; }
+.step-row-desc  { font-size: 11px; color: var(--text2); background: transparent; border: none; outline: none; font-family: var(--font-b); width: 100%; resize: none; line-height: 1.5; }
+
+/* SNS export */
+.sns-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.sns-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--white); border: 1.5px solid var(--cream2);
+  border-radius: var(--r-full);
+  padding: 6px 12px;
+  font-size: 11px; font-weight: 600; color: var(--text2);
+  cursor: pointer;
+}
+.sns-chip.on { border-color: var(--accent); color: var(--accent); background: #FDF5F0; }
+.sns-chip span { font-size: 14px; }
+
+.cr-spacer { height: 100px; }
+
+/* ════════════════════════════════
+   SCREEN 4 — REPRODUCE
+════════════════════════════════ */
+.rp-header {
+  padding: 4px 20px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.rp-title { font-size: 17px; font-weight: 600; color: var(--dark); }
+
+.rp-preview {
+  margin: 0 16px 16px;
+  border-radius: var(--r-xl);
+  aspect-ratio: 16/10;
+  background: linear-gradient(160deg,#6A9E7A,#C4714A,#2C1F14);
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+.rp-preview-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(44,31,20,0.7) 0%, transparent 50%); }
+.rp-preview-info { position: relative; z-index: 1; padding: 14px 16px; }
+.rp-preview-info h3 { font-family: var(--font-d); font-size: 16px; color: #fff; }
+.rp-preview-info p  { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+/* Mode toggle */
+.mode-toggle {
+  display: flex; margin: 0 20px 18px;
+  background: var(--cream2); border-radius: var(--r-full);
+  padding: 3px;
+}
+.mode-btn {
+  flex: 1; text-align: center; padding: 8px;
+  font-size: 12px; font-weight: 600; color: var(--text2);
+  border-radius: var(--r-full); cursor: pointer;
+}
+.mode-btn.on { background: var(--white); color: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+.rp-body { padding: 0 20px; }
+
+/* Checklist */
+.check-section { margin-bottom: 18px; }
+.check-title { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.check-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--white); border-radius: var(--r-md);
+  margin-bottom: 6px; cursor: pointer;
+}
+.check-box {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 2px solid var(--sand);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 11px;
+}
+.check-box.checked { background: var(--accent); border-color: var(--accent); color: #fff; }
+.check-item-info { flex: 1; }
+.check-item-name { font-size: 12px; font-weight: 600; color: var(--dark); }
+.check-item-sub  { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.check-item-link { font-size: 10px; color: var(--accent); font-weight: 600; }
+
+/* Progress */
+.progress-bar {
+  background: var(--cream2); border-radius: var(--r-full);
+  height: 6px; margin-bottom: 6px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--accent); border-radius: var(--r-full); }
+.progress-label { font-size: 11px; color: var(--text2); margin-bottom: 18px; }
+
+/* Template swap */
+.swap-area {
+  background: var(--white); border-radius: var(--r-xl);
+  padding: 16px; margin-bottom: 16px;
+}
+.swap-title { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
+.swap-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream2);
+}
+.swap-item:last-child { border-bottom: none; }
+.swap-slot {
+  width: 48px; height: 48px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.swap-slot.empty {
+  border: 2px dashed var(--sand); font-size: 20px;
+  background: var(--cream2);
+}
+.swap-info { flex: 1; }
+.swap-info h4 { font-size: 12px; font-weight: 600; color: var(--dark); }
+.swap-info p  { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.swap-btn {
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); border: 1px solid var(--accent2);
+  border-radius: var(--r-full); padding: 5px 12px; cursor: pointer;
+}
+.swap-btn.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Export */
+.export-section { margin-bottom: 96px; }
+.export-title { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+.export-row { display: flex; gap: 8px; }
+.export-btn {
+  flex: 1; background: var(--white); border: 1.5px solid var(--cream2);
+  border-radius: var(--r-lg); padding: 12px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600; color: var(--text2); cursor: pointer;
+}
+.export-btn.primary { border-color: var(--accent); color: var(--accent); background: #FDF5F0; }
+.export-icon { font-size: 20px; }
+
+/* ════════════════════════════════
+   SCREEN 5 — PROFILE
+════════════════════════════════ */
+.pf-header {
+  background: var(--white);
+  padding: 8px 20px 0;
+  border-bottom: 1px solid var(--cream2);
+}
+.pf-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pf-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), var(--brown));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); font-size: 24px; color: #fff;
+  flex-shrink: 0;
+}
+.pf-info { flex: 1; }
+.pf-name { font-family: var(--font-d); font-size: 19px; color: var(--dark); }
+.pf-bio  { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.5; }
+.pf-edit {
+  border: 1.5px solid var(--sand); border-radius: var(--r-full);
+  padding: 6px 16px; font-size: 11px; font-weight: 600;
+  color: var(--dark); cursor: pointer; white-space: nowrap;
+}
+
+.pf-stats { display: flex; gap: 20px; padding-bottom: 14px; }
+.pf-stat { text-align: center; }
+.pf-stat-n { font-size: 17px; font-weight: 700; color: var(--dark); }
+.pf-stat-l { font-size: 10px; color: var(--text2); }
+
+.pf-tabs { display: flex; }
+.pf-tab {
+  flex: 1; text-align: center; padding: 11px 0;
+  font-size: 12px; font-weight: 600; color: var(--text3);
+  border-bottom: 2px solid transparent; cursor: pointer;
+}
+.pf-tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Recipe grid */
+.recipe-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; padding: 14px 16px; margin-bottom: 96px;
+}
+.rg-card {
+  background: var(--white); border-radius: var(--r-lg);
+  overflow: hidden; cursor: pointer;
+}
+.rg-thumb { aspect-ratio: 4/3; }
+.rg-body { padding: 10px 10px 12px; }
+.rg-title { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 3px; line-height: 1.3; }
+.rg-meta { font-size: 10px; color: var(--text2); display: flex; gap: 8px; }
+.rg-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: #FDF5F0; border-radius: var(--r-full);
+  padding: 2px 7px; font-size: 9px; font-weight: 600; color: var(--accent);
+  margin-top: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<h1 class="doc-title">ami</h1>
+<p class="doc-sub">Vlog Recipe Platform — v2 · Figma Import</p>
+
+<div class="screens">
+
+<!-- ══════════════════════════════
+     01 — HOME / FEED
+══════════════════════════════ -->
+<div class="screen-wrap">
+  <span class="screen-label">01 — Home / Discover</span>
+  <div class="phone">
+    <div class="sb"><span>9:41</span><div class="sb-r"><span>●●●</span><span>▲</span><span>🔋</span></div></div>
+
+    <div class="feed-header">
+      <div class="logo">ami</div>
+      <div style="display:flex;gap:8px">
+        <div class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+
+    <div class="feed-chips">
+      <span class="chip on">すべて</span>
+      <span class="chip">旅行</span>
+      <span class="chip">ビジネス</span>
+      <span class="chip">カフェ</span>
+      <span class="chip">日常</span>
+      <span class="chip">食</span>
+      <span class="chip">作品</span>
+    </div>
+
+    <div class="feed-grid">
+
+      <div class="fc">
+        <div class="fc-thumb bg-t">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">嵐山早朝さんぽ</div>
+            <div class="fc-user">@hana.kyoto</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 3点</div>
+            <div class="fc-meta-tools">CapCut · Lo-fi BGM · iPhone</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 284</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-thumb bg-f">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">カフェオープン密着</div>
+            <div class="fc-user">@miki.works</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 4点</div>
+            <div class="fc-meta-tools">DaVinci · Canva · Sony A7</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 512</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-thumb bg-c">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">大阪一人旅2泊</div>
+            <div class="fc-user">@riku.trip</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 2点</div>
+            <div class="fc-meta-tools">iMovie · iPhone 15</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 193</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-thumb bg-s">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">作品撮影の裏側</div>
+            <div class="fc-user">@ao.design</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 5点</div>
+            <div class="fc-meta-tools">LUT · Premiere · Godox</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 671</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-thumb bg-k">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">朝のルーティン</div>
+            <div class="fc-user">@yui.daily</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 2点</div>
+            <div class="fc-meta-tools">CapCut · iPhone SE</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 441</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-thumb bg-m">
+          <div class="fc-ov"></div>
+          <div class="recipe-badge">🎬 <span>レシピあり</span></div>
+          <div class="fc-info">
+            <div class="fc-title">錦市場グルメ巡り</div>
+            <div class="fc-user">@tomo.food</div>
+          </div>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <div class="fc-meta-title">使用ツール 3点</div>
+            <div class="fc-meta-tools">CapCut · Lo-fi · iPhone</div>
+          </div>
+          <div class="fc-meta-right">
+            <div class="fc-stat">♡ 328</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nav">
+      <div class="ni on">
+        <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>ホーム</span>
+      </div>
+      <div class="ni">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>発見</span>
+      </div>
+      <div class="ni"><div class="nc"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="ni">
+        <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span>保存</span>
+      </div>
+      <div class="ni">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>マイページ</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     02 — RECIPE DETAIL
+══════════════════════════════ -->
+<div class="screen-wrap">
+  <span class="screen-label">02 — Recipe Detail</span>
+  <div class="phone">
+    <div class="sb"><span>9:41</span><div class="sb-r"><span>●●●</span><span>▲</span><span>🔋</span></div></div>
+
+    <div class="rd-back">
+      <div class="icon-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div style="display:flex;gap:8px">
+        <div class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+        <div class="icon-btn"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      </div>
+    </div>
+
+    <div class="rd-video">
+      <div class="rd-play">▶</div>
+      <div class="rd-dur">1:04</div>
+    </div>
+
+    <div class="rd-body">
+      <div class="rd-title">嵐山早朝さんぽvlog</div>
+      <div class="rd-author">
+        <div class="avatar" style="width:30px;height:30px;font-size:11px">H</div>
+        <div>
+          <div class="rd-author-name">@hana.kyoto</div>
+          <div class="rd-author-sub">1.2k フォロワー</div>
+        </div>
+        <div class="follow-btn">フォロー</div>
+      </div>
+
+      <div class="rd-stats">
+        <div class="rd-stat"><div class="rd-stat-n">284</div><div class="rd-stat-l">いいね</div></div>
+        <div class="rd-stat"><div class="rd-stat-n">3</div><div class="rd-stat-l">使用ツール</div></div>
+        <div class="rd-stat"><div class="rd-stat-n">4</div><div class="rd-stat-l">ステップ</div></div>
+        <div class="rd-stat"><div class="rd-stat-n">96</div><div class="rd-stat-l">再現済み</div></div>
+      </div>
+
+      <div class="rd-tabs">
+        <div class="rd-tab on">材料</div>
+        <div class="rd-tab">手順</div>
+        <div class="rd-tab">コメント</div>
+      </div>
+
+      <!-- Materials -->
+      <div class="mat-section">
+        <div class="mat-section-title">📷 撮影機材</div>
+        <div class="mat-item">
+          <div class="mat-icon">📱</div>
+          <div class="mat-info">
+            <div class="mat-name">iPhone 15 Pro</div>
+            <div class="mat-detail">メインカメラ / シネマティックモード</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mat-section">
+        <div class="mat-section-title">🎵 BGM・音楽</div>
+        <div class="mat-item">
+          <div class="mat-icon">🎵</div>
+          <div class="mat-info">
+            <div class="mat-name">Lo-fi Morning</div>
+            <div class="mat-detail">LoFi Girl · YouTube Audio Library</div>
+          </div>
+          <div class="mat-link">無料DL</div>
+        </div>
+      </div>
+
+      <div class="mat-section">
+        <div class="mat-section-title">✂️ 編集アプリ</div>
+        <div class="mat-item">
+          <div class="mat-icon">📲</div>
+          <div class="mat-info">
+            <div class="mat-name">CapCut</div>
+            <div class="mat-detail">テンプレ「Morning Walk」使用</div>
+          </div>
+          <div class="mat-link">無料</div>
+        </div>
+      </div>
+
+      <div class="mat-section">
+        <div class="mat-section-title">🎨 フィルター・LUT</div>
+        <div class="mat-item">
+          <div class="mat-icon">✨</div>
+          <div class="mat-info">
+            <div class="mat-name">Warm Kyoto LUT</div>
+            <div class="mat-detail">明度+10 / 彩度-5 / 色温度+8</div>
+          </div>
+          <div class="mat-link">DL</div>
+        </div>
+      </div>
+
+      <div class="rd-cta">
+        <div class="btn-main">🔁 このレシピで作る</div>
+        <div class="btn-sub"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="ni on"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>ホーム</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>発見</span></div>
+      <div class="ni"><div class="nc"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>保存</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     03 — CREATE / POST
+══════════════════════════════ -->
+<div class="screen-wrap">
+  <span class="screen-label">03 — Create / 投稿</span>
+  <div class="phone">
+    <div class="sb"><span>9:41</span><div class="sb-r"><span>●●●</span><span>▲</span><span>🔋</span></div></div>
+
+    <div class="cr-header">
+      <div class="icon-btn"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--dark);fill:none;stroke-width:1.8;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+      <div class="cr-title">レシピを投稿</div>
+      <div class="cr-publish">公開する</div>
+    </div>
+
+    <div class="cr-body">
+
+      <!-- Video -->
+      <div class="cr-video">
+        <div class="cr-video-icon">🎬</div>
+        <h4>完成動画をアップロード</h4>
+        <p>MP4 / MOV · 最大5分</p>
+      </div>
+
+      <!-- Title -->
+      <div class="cr-field">
+        <label class="cr-label">タイトル</label>
+        <input class="cr-input" type="text" value="嵐山早朝さんぽvlog" readonly>
+      </div>
+
+      <!-- Materials -->
+      <div class="cr-field">
+        <label class="cr-label">📷 使用機材・ツール</label>
+        <div class="mat-editor">
+          <div class="mat-row">
+            <div class="mat-row-icon">📱</div>
+            <div class="mat-row-inputs">
+              <input class="mat-row-name" value="iPhone 15 Pro" readonly>
+              <input class="mat-row-detail" value="メインカメラ" readonly>
+            </div>
+            <div class="mat-row-del">×</div>
+          </div>
+          <div class="mat-row">
+            <div class="mat-row-icon">🎵</div>
+            <div class="mat-row-inputs">
+              <input class="mat-row-name" value="Lo-fi Morning" readonly>
+              <input class="mat-row-detail" value="BGM / 無料" readonly>
+            </div>
+            <div class="mat-row-del">×</div>
+          </div>
+          <div class="mat-row">
+            <div class="mat-row-icon">📲</div>
+            <div class="mat-row-inputs">
+              <input class="mat-row-name" value="CapCut" readonly>
+              <input class="mat-row-detail" value="編集アプリ" readonly>
+            </div>
+            <div class="mat-row-del">×</div>
+          </div>
+        </div>
+        <div class="add-btn">＋ ツールを追加する</div>
+      </div>
+
+      <!-- Steps -->
+      <div class="cr-field">
+        <label class="cr-label">✂️ 制作ステップ</label>
+        <div class="step-editor">
+          <div class="step-row">
+            <div class="step-row-n">1</div>
+            <div class="step-row-inputs">
+              <input class="step-row-title" value="撮影" readonly>
+              <textarea class="step-row-desc" rows="2" readonly>早朝6時〜8時。人が少ない時間帯に竹林・渡月橋・川沿いを歩きながら撮影</textarea>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-row-n">2</div>
+            <div class="step-row-inputs">
+              <input class="step-row-title" value="素材の整理" readonly>
+              <textarea class="step-row-desc" rows="2" readonly>ベストショットを20〜30クリップに絞る。長さは1〜3秒が基本</textarea>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-row-n">3</div>
+            <div class="step-row-inputs">
+              <input class="step-row-title" value="CapCutで編集" readonly>
+              <textarea class="step-row-desc" rows="2" readonly>テンプレ「Morning Walk」を使いBGMに合わせてカット。フィルターはWarm Kyoto</textarea>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-row-n">4</div>
+            <div class="step-row-inputs">
+              <input class="step-row-title" value="書き出し・投稿" readonly>
+              <textarea class="step-row-desc" rows="2" readonly>1080p / 30fps。アスペクト比は9:16（縦）と16:9（横）両方書き出す</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="add-btn">＋ ステップを追加する</div>
+      </div>
+
+      <!-- SNS export -->
+      <div class="cr-field">
+        <label class="cr-label">🌐 同時投稿するSNS</label>
+        <div class="sns-row">
+          <div class="sns-chip on"><span>📱</span> Ami</div>
+          <div class="sns-chip on"><span>📸</span> Instagram</div>
+          <div class="sns-chip"><span>▶</span> YouTube</div>
+          <div class="sns-chip"><span>🎵</span> TikTok</div>
+          <div class="sns-chip"><span>𝕏</span> X</div>
+        </div>
+      </div>
+
+      <div class="cr-spacer"></div>
+    </div>
+
+    <div class="nav">
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>ホーム</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>発見</span></div>
+      <div class="ni on"><div class="nc"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>保存</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     04 — REPRODUCE
+══════════════════════════════ -->
+<div class="screen-wrap">
+  <span class="screen-label">04 — Reproduce / 再現</span>
+  <div class="phone">
+    <div class="sb"><span>9:41</span><div class="sb-r"><span>●●●</span><span>▲</span><span>🔋</span></div></div>
+
+    <div class="rp-header">
+      <div class="icon-btn"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--dark);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="rp-title">このレシピで作る</div>
+      <div class="icon-btn"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--dark);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></div>
+    </div>
+
+    <div class="rp-preview">
+      <div class="rp-preview-ov"></div>
+      <div class="rp-preview-info">
+        <h3>嵐山早朝さんぽvlog</h3>
+        <p>by @hana.kyoto · 96人が再現済み</p>
+      </div>
+    </div>
+
+    <div class="mode-toggle">
+      <div class="mode-btn on">📖 見て学ぶ</div>
+      <div class="mode-btn">🔁 差し替えて作る</div>
+    </div>
+
+    <div class="rp-body">
+      <!-- Progress -->
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+      <div class="progress-label">2 / 4 ステップ完了</div>
+
+      <!-- Checklist -->
+      <div class="check-section">
+        <div class="check-title">📷 材料チェックリスト</div>
+        <div class="check-item">
+          <div class="check-box checked">✓</div>
+          <div class="check-item-info">
+            <div class="check-item-name">スマホ（カメラ付き）</div>
+            <div class="check-item-sub">iPhoneでもAndroidでもOK</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-box checked">✓</div>
+          <div class="check-item-info">
+            <div class="check-item-name">CapCutをインストール</div>
+            <div class="check-item-sub">無料 · App Store / Google Play</div>
+          </div>
+          <div class="check-item-link">DL ↗</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-item-info">
+            <div class="check-item-name">Lo-fi Morning BGMをDL</div>
+            <div class="check-item-sub">YouTube Audio Library · 無料</div>
+          </div>
+          <div class="check-item-link">DL ↗</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-item-info">
+            <div class="check-item-name">Warm Kyoto LUTをDL</div>
+            <div class="check-item-sub">作者提供フィルター</div>
+          </div>
+          <div class="check-item-link">DL ↗</div>
+        </div>
+      </div>
+
+      <!-- Swap area (template mode) -->
+      <div class="swap-area">
+        <div class="swap-title">🔁 自分の素材に差し替える</div>
+        <div class="swap-item">
+          <div class="swap-slot bg-t" style="opacity:0.6"></div>
+          <div class="swap-info">
+            <h4>オープニング素材</h4>
+            <p>場所・雰囲気が伝わるショット · 3〜5秒</p>
+          </div>
+          <div class="swap-btn">選ぶ</div>
+        </div>
+        <div class="swap-item">
+          <div class="swap-slot done bg-m" style="font-size:10px;color:#fff;font-weight:600"></div>
+          <div class="swap-info">
+            <h4>メインシーン</h4>
+            <p>旅のハイライト · 15〜20秒</p>
+          </div>
+          <div class="swap-btn done">完了</div>
+        </div>
+        <div class="swap-item">
+          <div class="swap-slot empty">＋</div>
+          <div class="swap-info">
+            <h4>ディテールショット</h4>
+            <p>食・風景のクローズアップ · 5〜10秒</p>
+          </div>
+          <div class="swap-btn">選ぶ</div>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="export-section">
+        <div class="export-title">完成したら投稿する</div>
+        <div class="export-row">
+          <div class="export-btn primary">
+            <div class="export-icon">📱</div>
+            <span>Amiに投稿</span>
+          </div>
+          <div class="export-btn">
+            <div class="export-icon">📸</div>
+            <span>Instagram</span>
+          </div>
+          <div class="export-btn">
+            <div class="export-icon">▶</div>
+            <span>YouTube</span>
+          </div>
+          <div class="export-btn">
+            <div class="export-icon">🎵</div>
+            <span>TikTok</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="ni on"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>ホーム</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>発見</span></div>
+      <div class="ni"><div class="nc"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>保存</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     05 — PROFILE
+══════════════════════════════ -->
+<div class="screen-wrap">
+  <span class="screen-label">05 — Profile / マイページ</span>
+  <div class="phone">
+    <div class="sb"><span>9:41</span><div class="sb-r"><span>●●●</span><span>▲</span><span>🔋</span></div></div>
+
+    <div class="pf-header">
+      <div class="pf-top">
+        <div class="pf-avatar">A</div>
+        <div class="pf-info">
+          <div class="pf-name">Ami User</div>
+          <div class="pf-bio">旅×カフェ×日常を発信中 ☕ 京都在住</div>
+        </div>
+        <div class="pf-edit">編集</div>
+      </div>
+      <div class="pf-stats">
+        <div class="pf-stat"><div class="pf-stat-n">12</div><div class="pf-stat-l">レシピ投稿</div></div>
+        <div class="pf-stat"><div class="pf-stat-n">248</div><div class="pf-stat-l">フォロワー</div></div>
+        <div class="pf-stat"><div class="pf-stat-n">1.2k</div><div class="pf-stat-l">再現された</div></div>
+        <div class="pf-stat"><div class="pf-stat-n">89</div><div class="pf-stat-l">フォロー中</div></div>
+      </div>
+      <div class="pf-tabs">
+        <div class="pf-tab on">投稿</div>
+        <div class="pf-tab">再現済み</div>
+        <div class="pf-tab">保存済み</div>
+      </div>
+    </div>
+
+    <div class="recipe-grid">
+      <div class="rg-card">
+        <div class="rg-thumb bg-t"></div>
+        <div class="rg-body">
+          <div class="rg-title">嵐山早朝さんぽ</div>
+          <div class="rg-meta"><span>3 ツール</span><span>♡ 284</span></div>
+          <div class="rg-badge">🔁 96回再現</div>
+        </div>
+      </div>
+      <div class="rg-card">
+        <div class="rg-thumb bg-f"></div>
+        <div class="rg-body">
+          <div class="rg-title">錦市場グルメ巡り</div>
+          <div class="rg-meta"><span>2 ツール</span><span>♡ 192</span></div>
+          <div class="rg-badge">🔁 47回再現</div>
+        </div>
+      </div>
+      <div class="rg-card">
+        <div class="rg-thumb bg-k"></div>
+        <div class="rg-body">
+          <div class="rg-title">朝のルーティン</div>
+          <div class="rg-meta"><span>2 ツール</span><span>♡ 441</span></div>
+          <div class="rg-badge">🔁 213回再現</div>
+        </div>
+      </div>
+      <div class="rg-card">
+        <div class="rg-thumb bg-c"></div>
+        <div class="rg-body">
+          <div class="rg-title">カフェ巡り京都</div>
+          <div class="rg-meta"><span>4 ツール</span><span>♡ 318</span></div>
+          <div class="rg-badge">🔁 88回再現</div>
+        </div>
+      </div>
+      <div class="rg-card">
+        <div class="rg-thumb bg-s"></div>
+        <div class="rg-body">
+          <div class="rg-title">夕暮れの鴨川</div>
+          <div class="rg-meta"><span>3 ツール</span><span>♡ 256</span></div>
+          <div class="rg-badge">🔁 61回再現</div>
+        </div>
+      </div>
+      <div class="rg-card">
+        <div class="rg-thumb bg-m"></div>
+        <div class="rg-body">
+          <div class="rg-title">作品撮影の裏側</div>
+          <div class="rg-meta"><span>5 ツール</span><span>♡ 671</span></div>
+          <div class="rg-badge">🔁 334回再現</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>ホーム</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>発見</span></div>
+      <div class="ni"><div class="nc"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>保存</span></div>
+      <div class="ni on"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /screens -->
+</body>
+</html>
